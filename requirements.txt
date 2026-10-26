@@ -1,0 +1,2 @@
+# reviewbench runs on the Python standard library alone — no install needed.
+# The optional LLMReviewer uses urllib (stdlib) to call Ollama Cloud.

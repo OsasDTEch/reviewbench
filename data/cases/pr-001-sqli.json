@@ -1,0 +1,9 @@
+{
+  "id": "pr-001",
+  "title": "Add user lookup endpoint",
+  "repo": "example/api",
+  "diff": "diff --git a/api/users.py b/api/users.py\nindex 1111111..2222222 100644\n--- a/api/users.py\n+++ b/api/users.py\n@@ -10,3 +10,8 @@ from db import conn\n def get_user(request):\n     uid = request.args.get(\"id\")\n+    # fetch the user\n+    query = f\"SELECT * FROM users WHERE id = {uid}\"\n+    cur = conn.cursor()\n+    cur.execute(query)\n+    print(\"fetched user\", uid)\n     return cur.fetchone()\n",
+  "expected_findings": [
+    {"id": "f1", "file": "api/users.py", "line": 13, "category": "sql-injection", "severity": "high", "summary": "uid interpolated into SQL via f-string"}
+  ]
+}

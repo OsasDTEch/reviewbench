@@ -1,0 +1,9 @@
+{
+  "id": "pr-004",
+  "title": "Product search (real bug buried in noise)",
+  "repo": "example/api",
+  "diff": "diff --git a/api/search.py b/api/search.py\nindex eeeeeee..fffffff 100644\n--- a/api/search.py\n+++ b/api/search.py\n@@ -20,1 +20,7 @@ def search(request):\n     term = request.args.get(\"q\")\n+    print(\"search term:\", term)\n+    # TODO: add pagination\n+    sql = \"SELECT * FROM products WHERE name LIKE '%\" + term + \"%'\"\n+    rows = db.execute(sql)\n+    print(\"rows:\", len(rows))\n+    return rows\n",
+  "expected_findings": [
+    {"id": "f1", "file": "api/search.py", "line": 23, "category": "sql-injection", "severity": "high", "summary": "term concatenated into LIKE clause"}
+  ]
+}

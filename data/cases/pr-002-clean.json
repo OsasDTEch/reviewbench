@@ -1,0 +1,7 @@
+{
+  "id": "pr-002",
+  "title": "Add titleize helper (clean)",
+  "repo": "example/api",
+  "diff": "diff --git a/utils/format.py b/utils/format.py\nindex aaaaaaa..bbbbbbb 100644\n--- a/utils/format.py\n+++ b/utils/format.py\n@@ -4,2 +4,6 @@ def slugify(s):\n     return s.strip().lower().replace(\" \", \"-\")\n+\n+def titleize(s):\n+    # TODO: handle unicode\n+    print(\"titleizing\", s)\n+    return s.title()\n",
+  "expected_findings": []
+}

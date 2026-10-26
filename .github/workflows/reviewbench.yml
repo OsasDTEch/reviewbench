@@ -1,0 +1,33 @@
+name: reviewbench
+
+# Scores the reviewer on the case set on every PR and uploads the HTML
+# scorecard as a build artifact. A starting point, not a finished integration.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Score reviewer on the case set
+        run: python -m reviewbench run --data data/cases --out out
+
+      - name: Upload scorecard
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewbench-scorecard
+          path: out/report.html
+
+# To score the *actual* PR instead of the bundled cases:
+#   1. grab the live diff:  gh pr diff ${{ github.event.pull_request.number }} > pr.diff
+#   2. wrap it as a data/cases/*.json with your reviewer's findings as expected_findings
+#   3. run reviewbench as above, then fail the job (or comment) on a precision/FP threshold
+# That turns the harness into a merge gate: the bot's own noise has to clear a bar.

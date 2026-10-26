@@ -1,0 +1,9 @@
+{
+  "id": "pr-005",
+  "title": "Export endpoint (real bug the reviewer misses)",
+  "repo": "example/api",
+  "diff": "diff --git a/api/export.py b/api/export.py\nindex 7777777..8888888 100644\n--- a/api/export.py\n+++ b/api/export.py\n@@ -5,2 +5,5 @@ import subprocess\n def export(request):\n     name = request.args.get(\"file\")\n+    # zip the user's export\n+    cmd = \"tar czf /tmp/out.tgz \" + name\n+    subprocess.run(cmd, shell=True)\n+    return send(\"/tmp/out.tgz\")\n",
+  "expected_findings": [
+    {"id": "f1", "file": "api/export.py", "line": 9, "category": "command-injection", "severity": "high", "summary": "user filename passed to a shell via subprocess shell=True"}
+  ]
+}
